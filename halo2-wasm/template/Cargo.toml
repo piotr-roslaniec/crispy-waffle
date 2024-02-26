@@ -1,0 +1,23 @@
+[package]
+name = "halo2-wasm-template"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = {  version = "0.2.87", optional = true }
+
+halo2-base = { git = "https://github.com/Cardinal-Cryptography/halo2-lib.git", branch = "aleph", features = [
+    "halo2-cc",
+] }
+
+halo2-wasm = { path = "..", default-features = false, optional = true }
+
+[features]
+default = []
+#default = ["rayon", "wasm]
+rayon = ["halo2-wasm/rayon"]
+wasm = ["halo2-wasm", "wasm-bindgen"]
+

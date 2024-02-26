@@ -1,0 +1,34 @@
+{
+  "name": "shielder-webpack-5-experiments",
+  "version": "0.1.0",
+  "description": "A usage example for shielder",
+  "main": "index.js",
+  "scripts": {
+    "prebuild": "rm -rf dist",
+    "build": "webpack --config webpack.config.js",
+    "start": "webpack-dev-server"
+  },
+  "collaborators": [
+    "Piotr Rosłaniec <p.roslaniec@gmail.com>"
+  ],
+  "license": "GPL-3.0-only",
+  "dependencies": {
+    "comlink": "^4.4.1",
+    "halo2-wasm-template": "file:../pkg"
+  },
+  "devDependencies": {
+    "ansi-html-community": "^0.0.8",
+    "buffer": "^6.0.3",
+    "copy-webpack-plugin": "^12.0.2",
+    "events": "^3.3.0",
+    "html-entities": "^2.4.0",
+    "https-browserify": "^1.0.0",
+    "stream-http": "^3.2.0",
+    "ts-loader": "9.2.5",
+    "typescript": "4.4.3",
+    "url": "^0.11.3",
+    "webpack": "^5.52.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.2"
+  }
+}
