@@ -1,0 +1,57 @@
+[package]
+name = "shielder"
+version = "0.1.0"
+edition = "2021"
+license = "GPL-3.0"
+repository = "https://github.com/piotr-roslaniec/crispy-waffle"
+readme = "README.md"
+description = ""
+keywords = []
+categories = []
+authors = ["Piotr Roslaniec <p.roslaniec@gmail.com>"]
+
+[lib]
+bench = false
+
+[dependencies]
+halo2-base = { git = "https://github.com/Cardinal-Cryptography/halo2-lib.git", branch = "aleph", features = [
+    "halo2-cc",
+] }
+halo2-wasm = { path = "../halo2-wasm", default-features = false, optional = true }
+# WASM bindings:
+console_error_panic_hook = { version = "0.1.7", optional = true }
+getrandom = { version = "0.2", features = ["js"], optional = true }
+js-sys = { version = "0.3.63", optional = true }
+wasm-bindgen = { version = "0.2.86", optional = true }
+wasm-bindgen-derive = { version = "0.2.1", optional = true }
+
+[dev-dependencies]
+criterion = "0.4.0"
+# WASM bindings:
+console_error_panic_hook = "0.1.7"
+wasm-bindgen = { version = "0.2.86", features = ["serde-serialize"] }
+
+[features]
+# TODO: Remove bindings-wasm from default features once we
+# have a proper facade for the user API
+default = ["bindings-wasm"]
+rayon = ["halo2-wasm/rayon"]
+bindings-wasm = [
+    "console_error_panic_hook",
+    "getrandom",
+    "js-sys",
+    "wasm-bindgen",
+    "wasm-bindgen-derive",
+    "halo2-wasm",
+]
+
+[[bench]]
+name = "benchmarks"
+path = "benches/bench_main.rs"
+harness = false
+
+[package.metadata.cargo-machete]
+ignored = [
+    "getrandom",
+]
+

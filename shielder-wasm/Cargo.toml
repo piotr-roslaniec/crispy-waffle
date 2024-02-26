@@ -1,0 +1,25 @@
+[package]
+name = "shielder-wasm"
+version = "0.1.0"
+authors = ["Piotr Roslaniec <p.roslaniec@gmail.com>"]
+edition = "2021"
+license = "GPL-3.0-only"
+readme = "README.md"
+categories = []
+repository = "https://github.com/piotr-roslaniec/crispy-waffle"
+description = "WASM bindings for shielder"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+shielder = { package = "shielder", path = "../shielder", features = ["bindings-wasm"] }
+halo2-wasm = { path = "../halo2-wasm", default-features = false, optional = true }
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3.28"
+
+[features]
+default = ["rayon", "halo2-wasm"]
+rayon = ["halo2-wasm/rayon"]
