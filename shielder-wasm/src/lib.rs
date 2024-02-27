@@ -2,4 +2,4 @@
 
 extern crate alloc;
 
-pub use shielder::bindings_wasm::*;
+pub use shielder::wasm::*;

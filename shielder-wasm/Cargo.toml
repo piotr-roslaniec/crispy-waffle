@@ -14,12 +14,13 @@ publish = false
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-shielder = { package = "shielder", path = "../shielder", features = ["bindings-wasm"] }
-halo2-wasm = { path = "../halo2-wasm", default-features = false, optional = true }
+shielder = { package = "shielder", path = "../shielder", features = ["wasm"] }
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3.28"
 
 [features]
-default = ["rayon", "halo2-wasm"]
-rayon = ["halo2-wasm/rayon"]
+default = []
+#default = ["rayon""]
+# TODO: How do we wrangle rayon back into the build?
+#rayon = ["halo2-wasm/rayon"]

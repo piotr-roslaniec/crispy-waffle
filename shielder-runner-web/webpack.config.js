@@ -23,7 +23,7 @@ const config = {
     compress: true,
     port: 9000,
     headers: {
-      // Required by `SharedArrayBuffer` in `halo2-wasm`
+      // Required by `SharedArrayBuffer` in WASM
       // See: https://stackoverflow.com/questions/72881660/web-worker-blocked-by-self-crossoriginisolated-on-cypress
       "Cross-Origin-Opener-Policy": "same-origin",
       "Cross-Origin-Embedder-Policy": "require-corp",
