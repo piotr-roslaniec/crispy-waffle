@@ -12,7 +12,6 @@ crate-type = ["cdylib", "rlib"]
 extend = "1.2.0"
 halo2curves = { version = "0.6.0", default-features = false }
 halo2_proofs = { git = "https://github.com/Cardinal-Cryptography/pse-halo2", branch = "halo2-cc", package = "halo2_proofs" }
-plotters = "0.3.4"
 rand_core = "0.6.4"
 serde = { version = "1.0.156", features = ["derive"] }
 serde_json = "1.0.94"
@@ -21,7 +20,13 @@ serde_json = "1.0.94"
 getrandom = { version = "0.2", optional = true }
 wasm-bindgen = { version = "0.2.84", optional = true }
 js-sys = { version = "0.3.61", optional = true }
+rayon = { version = "1.8", optional = true }
+
+[target.'cfg(target_family = "wasm")'.dependencies]
+wasm-bindgen-rayon = { version = "=1.1.3", optional = true }
 
 [features]
 default = []
 wasm = ["getrandom/js", "wasm-bindgen", "js-sys"]
+multithreading = ["rayon"]
+

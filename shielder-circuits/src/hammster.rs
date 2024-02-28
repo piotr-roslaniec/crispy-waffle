@@ -475,9 +475,9 @@ pub fn calculate_hamming_distance(a: Vec<u64>, b: Vec<u64>) -> Vec<Fp> {
 pub fn run_mock_prover(
     k: u32,
     circuit: &HammsterCircuit<Fp>,
-    pub_input: &Vec<Fp>,
+    pub_input: &[Fp],
 ) {
-    let prover = MockProver::run(k, circuit, vec![pub_input.clone()])
+    let prover = MockProver::run(k, circuit, vec![pub_input.to_vec()])
         .expect("Mock prover should run");
     let res = prover.verify();
     match res {

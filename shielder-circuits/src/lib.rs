@@ -36,8 +36,7 @@ pub fn proof_generate(a: &[u8], b: &[u8], params_bytes: &[u8]) -> Vec<u8> {
 
     // Generate proof
     let hammster_circuit = create_circuit(a_vec, b_vec);
-    let proof = generate_proof(&params, &pk, hammster_circuit, &hamming_dist);
-    proof
+    generate_proof(&params, &pk, hammster_circuit, &hamming_dist)
 }
 
 // TODO: Consider rewriting:

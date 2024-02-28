@@ -7,7 +7,7 @@ Workspace structure:
 - `shielder-circuits` - Contains circuits used by the `shielder`.
 - `shielder` - Wallet-facing SDK, implements protocol objects and algorithms.
 - `shielder-wasm` - Code generated from `shielder`, to be used by `shielder-sdk`.
-- `shielder-sdk` - SDK for the shielder, doesn't exist yet, to be used by the `shielder-runner-web`.
+- `shielder-sdk` - SDK for the `shielder`, doesn't exist yet, to be used by the `shielder-runner-web`.
 - `shielder-runner-web` - Web example of using `shielder-wasm`. Should use `shielder-sdk` in the future.
 
 # Benchmarks

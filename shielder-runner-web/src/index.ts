@@ -17,10 +17,10 @@ async function start() {
     // Settings
     const size = 8;
     const num_runs = 10; // Running just 10x200 iterations, to avoid crashing WASM
-    const threads = null; // TODO: No support for threads as of now
+    const threads = 1;
 
     try {
-        await workerAPI.init();
+        await workerAPI.init(threads);
 
         const results = [];
         for (let i = 0; i < num_runs; i++) {

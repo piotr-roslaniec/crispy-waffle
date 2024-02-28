@@ -1,7 +1,7 @@
 {
-  "name": "template-webpack-5-experiments",
+  "name": "shielder-runner-web",
   "version": "0.1.0",
-  "description": "A usage example for template",
+  "description": "A usage example for shielder-wasm",
   "main": "index.js",
   "scripts": {
     "prebuild": "rm -rf dist",

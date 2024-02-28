@@ -1,4 +1,4 @@
-import init, {MyCircuit} from "shielder-wasm";
+import init, {MyCircuit, initThreadPool} from "shielder-wasm";
 import {expose} from "comlink";
 
 const makeInput = (size: number): Uint8Array => {
@@ -11,9 +11,13 @@ const makeInput = (size: number): Uint8Array => {
 
 export class Halo2Benchmark {
 
-    async init(): Promise<void> {
+    async init(threads?: number): Promise<void> {
         console.log("BenchmarkWorker: init()")
         await init();
+        if (threads) {
+            console.log(`BenchmarkWorker: initThreadPool(${threads})`)
+            await initThreadPool(threads);
+        }
         console.log("BenchmarkWorker: init() done")
     }
 

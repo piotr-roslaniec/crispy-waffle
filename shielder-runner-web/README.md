@@ -1,4 +1,4 @@
-# `template` in the browser
+# shielder-runner-web
 
 This example takes advantage of experimental async WASM loading in `webpack-5`. See `webpack.config.js` for details:
 
