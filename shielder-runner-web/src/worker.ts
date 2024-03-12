@@ -1,37 +1,40 @@
-import init, {Halo2Wasm, initPanicHook, initThreadPool, MyWasmCircuit} from "shielder-wasm";
+import init, {MyCircuit, initThreadPool} from "shielder-wasm";
 import {expose} from "comlink";
 
-const getHalo2Wasm = async (numThreads?: number) => {
-    await init();
-    initPanicHook();
-    if (numThreads && numThreads > 0) {
-        await initThreadPool(numThreads);
+const makeInput = (size: number): Uint8Array => {
+    const arr = new Uint8Array(size);
+    for (let i = 0; i < size; i++) {
+        arr[i] = i % 2;
     }
-    return new Halo2Wasm();
+    return arr;
 }
 
 export class Halo2Benchmark {
-    private halo2Wasm?: Halo2Wasm;
 
     async init(threads?: number): Promise<void> {
         console.log("BenchmarkWorker: init()")
-        this.halo2Wasm = await getHalo2Wasm(threads);
+        await init();
+        if (threads) {
+            console.log(`BenchmarkWorker: initThreadPool(${threads})`)
+            await initThreadPool(threads);
+        }
         console.log("BenchmarkWorker: init() done")
     }
 
-    async templateExample(iterations: number): Promise<number> {
-        if (!this.halo2Wasm) {
-            throw new Error("Halo2Wasm not initialized");
-        }
-        console.log("BenchmarkWorker: templateExample()")
-        console.log({iterations});
-        const myCircuit = new MyWasmCircuit(this.halo2Wasm);
-        console.log({myCircuit});
+    async runCircuit(size: number): Promise<number> {
+        console.log("BenchmarkWorker: runCircuit()")
+        console.log({size});
+
+        const a = makeInput(size);
+        const b = makeInput(size);
+        const myCircuit = new MyCircuit(size);
+
         const start = Date.now();
-        myCircuit.run(iterations);
+        myCircuit.prove(a, b);
         const timeSpent = Date.now() - start;
+
         console.log(`run() took ${timeSpent}ms`)
-        console.log("BenchmarkWorker: templateExample() done")
+        console.log("BenchmarkWorker: runCircuit() done")
         return timeSpent;
     }
 }

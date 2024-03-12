@@ -14,16 +14,11 @@ authors = ["Piotr Roslaniec <p.roslaniec@gmail.com>"]
 bench = false
 
 [dependencies]
-halo2-base = { git = "https://github.com/Cardinal-Cryptography/halo2-lib.git", branch = "aleph", features = [
-    "halo2-cc",
-] }
-halo2-wasm = { path = "../halo2-wasm", default-features = false, optional = true }
+shielder-circuits = { path = "../shielder-circuits" }
+rand = "0.8.5"
 # WASM bindings:
-console_error_panic_hook = { version = "0.1.7", optional = true }
 getrandom = { version = "0.2", features = ["js"], optional = true }
-js-sys = { version = "0.3.63", optional = true }
 wasm-bindgen = { version = "0.2.86", optional = true }
-wasm-bindgen-derive = { version = "0.2.1", optional = true }
 
 [dev-dependencies]
 criterion = "0.4.0"
@@ -32,18 +27,13 @@ console_error_panic_hook = "0.1.7"
 wasm-bindgen = { version = "0.2.86", features = ["serde-serialize"] }
 
 [features]
-# TODO: Remove bindings-wasm from default features once we
-# have a proper facade for the user API
-default = ["bindings-wasm"]
-rayon = ["halo2-wasm/rayon"]
-bindings-wasm = [
-    "console_error_panic_hook",
+default = []
+wasm = [
     "getrandom",
-    "js-sys",
     "wasm-bindgen",
-    "wasm-bindgen-derive",
-    "halo2-wasm",
+    "shielder-circuits/wasm",
 ]
+multithreading = ["shielder-circuits/multithreading"]
 
 [[bench]]
 name = "benchmarks"

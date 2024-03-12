@@ -9,7 +9,7 @@ rm -rf pkg
 if [ "$TARGET" = "nodejs" ]; then
   wasm-pack build --release --target nodejs --out-dir pkg --no-default-features
 elif [ "$TARGET" = "web" ]; then
-  wasm-pack build --release --target web --out-dir pkg
+  wasm-pack build --release --target web --out-dir pkg --features multithreading
 else
   echo "Target must be either 'web' or 'nodejs'"
   exit 1
