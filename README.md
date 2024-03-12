@@ -9,6 +9,7 @@ Workspace structure:
 - `shielder-wasm` - Code generated from `shielder`, to be used by `shielder-sdk`.
 - `shielder-sdk` - SDK for the `shielder`, doesn't exist yet, to be used by the `shielder-runner-web`.
 - `shielder-runner-web` - Web example of using `shielder-wasm`. Should use `shielder-sdk` in the future.
+- `shielder-extension` - Browser extension using `shielder-wasm`. Should use `shielder-sdk` in the future.
 
 # Benchmarks
 
@@ -48,6 +49,10 @@ Run 8: 963ms
 Run 9: 974ms
 ```
 
-TODO: `shielder-runner-web` benchmarks seem way too slow. 
-- Add benchmarks to `shielder-wasm` and compare. 
-- Use performance tooling in Chrome to debug this further.
+# TODO
+- Consider switching to a different repo structure
+  - `shielder-rs` and `shielder-ts` as separate directories in this repo, 
+  - or as separate repos
+- Create `shielder-sdk` package with `tsup` 
+  - https://dev.to/0xkoji/create-a-npm-package-template-with-typescript-and-tsup-328n
+  - https://casperiv.dev/blog/how-to-create-an-npm-package-tsup-esm-cjs-nodejs

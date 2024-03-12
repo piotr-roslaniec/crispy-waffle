@@ -17,9 +17,9 @@ dependencies:
   react-dom:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
-  shielder-wasm:
-    specifier: file:../shielder-wasm/pkg
-    version: file:../shielder-wasm/pkg
+  shielder-sdk:
+    specifier: file:../shielder-sdk
+    version: file:../shielder-sdk
 
 devDependencies:
   '@ianvs/prettier-plugin-sort-imports':
@@ -5687,6 +5687,13 @@ packages:
     resolution: {integrity: sha512-j9iR8g+/t0lArF4V6NE/QCfT+CO7iLqrXAHZbJdo+LfjqP1vR8Fg5bSiaq6Q2lOD1AUEVrEVIgABvBFYojJVYQ==}
     engines: {node: '>= 14'}
     hasBin: true
+    dev: false
+
+  file:../shielder-sdk:
+    resolution: {directory: ../shielder-sdk, type: directory}
+    name: shielder-sdk
+    dependencies:
+      shielder-wasm: file:../shielder-wasm/pkg
     dev: false
 
   file:../shielder-wasm/pkg:

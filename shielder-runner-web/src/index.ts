@@ -1,5 +1,5 @@
 import {wrap} from "comlink";
-import type {Halo2Benchmark} from "./worker";
+import type {Halo2BenchmarkWorker} from "./worker";
 
 const root = document.createElement("div");
 document.body.appendChild(root);
@@ -9,7 +9,7 @@ const worker: Worker = new Worker(new URL("./worker.ts", import.meta.url), {
     name: "worker"
 });
 
-const workerAPI = wrap<Halo2Benchmark>(worker);
+const workerAPI = wrap<Halo2BenchmarkWorker>(worker);
 
 async function start() {
     root.innerHTML = "Running...";

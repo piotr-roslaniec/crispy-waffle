@@ -1,4 +1,4 @@
-import {Halo2Benchmark} from "~worker";
+import {Halo2Benchmark} from "shielder-sdk";
 
 export async function start(size: number, numRuns: number) {
     try {

@@ -1,7 +1,7 @@
 {
   "name": "shielder-runner-web",
   "version": "0.1.0",
-  "description": "A usage example for shielder-wasm",
+  "description": "A usage example for shielder-sdk",
   "main": "index.js",
   "scripts": {
     "prebuild": "rm -rf dist",
@@ -9,12 +9,11 @@
     "build": "pnpm build:tsc && webpack --config webpack.config.js",
     "start": "webpack-dev-server"
   },
-  "collaborators": [
-    "Piotr Rosłaniec <p.roslaniec@gmail.com>"
-  ],
+  "author": "Piotr Rosłaniec <p.roslaniec@gmail.com>",
   "license": "GPL-3.0-only",
   "dependencies": {
     "comlink": "^4.4.1",
+    "shielder-sdk": "file:../shielder-sdk",
     "shielder-wasm": "file:../shielder-wasm/pkg"
   },
   "devDependencies": {

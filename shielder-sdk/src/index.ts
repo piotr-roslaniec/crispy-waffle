@@ -1,5 +1,4 @@
 import init, {MyCircuit, initThreadPool} from "shielder-wasm";
-import {expose} from "comlink";
 
 const makeInput = (size: number): Uint8Array => {
     const arr = new Uint8Array(size);
@@ -38,7 +37,3 @@ export class Halo2Benchmark {
         return timeSpent;
     }
 }
-
-const halo2Benchmark = new Halo2Benchmark();
-
-expose(halo2Benchmark);

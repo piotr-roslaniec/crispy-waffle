@@ -1,0 +1,33 @@
+{
+  "name": "shielder-sdk",
+  "version": "0.0.1",
+  "description": "Shielder SDK",
+  "author": "Piotr Roslaniec <p.roslaniec@gmail.com>",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "package.json"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsup ./src"
+  },
+  "dependencies": {
+    "shielder-wasm": "file:../shielder-wasm/pkg"
+  },
+  "devDependencies": {
+    "esbuild-plugin-wasm": "^1.1.0",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.2"
+  }
+}

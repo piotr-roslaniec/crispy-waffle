@@ -1,5 +1,5 @@
 import {start} from "~prover";
-import {Halo2Benchmark} from "~worker";
+import {Halo2Benchmark} from "shielder-sdk";
 
 (async () => {
     // TODO: Fix multithreading
