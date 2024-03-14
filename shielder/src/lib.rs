@@ -23,7 +23,6 @@ impl MyCircuit {
     }
 }
 
-
 #[cfg(test)]
 mod test {
     #[test]

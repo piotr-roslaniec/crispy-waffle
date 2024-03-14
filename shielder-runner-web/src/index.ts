@@ -1,5 +1,5 @@
 import {wrap} from "comlink";
-import type {Halo2Benchmark} from "./worker";
+import type {Halo2BenchmarkWorker} from "./worker";
 
 const root = document.createElement("div");
 document.body.appendChild(root);
@@ -9,21 +9,21 @@ const worker: Worker = new Worker(new URL("./worker.ts", import.meta.url), {
     name: "worker"
 });
 
-const workerAPI = wrap<Halo2Benchmark>(worker);
+const workerAPI = wrap<Halo2BenchmarkWorker>(worker);
 
 async function start() {
     root.innerHTML = "Running...";
 
     // Settings
     const size = 8;
-    const num_runs = 10; // Running just 10x200 iterations, to avoid crashing WASM
+    const numRuns = 10;
     const threads = 1;
 
     try {
         await workerAPI.init(threads);
 
         const results = [];
-        for (let i = 0; i < num_runs; i++) {
+        for (let i = 0; i < numRuns; i++) {
             console.log(`Size ${i}`);
             const result = await workerAPI.runCircuit(size);
             console.log(`Result ${i} = ${result}ms`);
@@ -33,7 +33,7 @@ async function start() {
         console.log(`Average = ${average}ms`);
 
         const resultsHtml = results.map((r, i) => `<div>Run ${i}: ${r}ms</div>`).join("");
-        let settingsHtml = `<div>Size: ${size}</div><div>Runs: ${num_runs}</div>`;
+        let settingsHtml = `<div>Size: ${size}</div><div>Runs: ${numRuns}</div>`;
         if (threads) {
             settingsHtml += `<div>Threads: ${threads}</div>`;
         }

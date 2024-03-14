@@ -19,7 +19,7 @@ mv pkg/shielder_wasm.js pkg/index.js
 mv pkg/shielder_wasm.d.ts pkg/index.d.ts
 
 if [ "$TARGET" == "nodejs" ]; then
-    sed -i '' "s/require('env')/{memory: new WebAssembly.Memory({initial: 100,maximum: 65536,shared: true,})}/g" pkg/index.js
+    sed -i "s/require('env')/{memory: new WebAssembly.Memory({initial: 100,maximum: 65536,shared: true,})}/g" pkg/index.js
 fi
 
 if [ "$TARGET" == "web" ]; then

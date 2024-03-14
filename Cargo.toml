@@ -5,6 +5,10 @@ members = [
     "shielder-circuits",
     "shielder-wasm",
 ]
+exclude = [
+    # Fixes cargo-machete false-positives in node_modules
+    "shielder-extension/node_modules"
+]
 
 [profile.dev]
 opt-level = 3

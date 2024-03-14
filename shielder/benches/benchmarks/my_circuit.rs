@@ -1,6 +1,6 @@
 use criterion::{black_box, criterion_group, BenchmarkId, Criterion};
-use shielder::MyCircuit;
 use rand::Rng;
+use shielder::MyCircuit;
 
 pub fn bench_my_circuit(c: &mut Criterion) {
     let mut group = c.benchmark_group("MyCircuit");
@@ -21,7 +21,7 @@ pub fn bench_my_circuit(c: &mut Criterion) {
         // benchmarking the setup code and mutating the circuit
         // multiple times
         // TODO: Not needed right now, but keeping this pattern for future reference
-        let mut do_benchmark = {
+        let do_benchmark = {
             let my_circuit = my_circuit.clone();
             move || {
                 black_box(my_circuit.prove(&a, &b));

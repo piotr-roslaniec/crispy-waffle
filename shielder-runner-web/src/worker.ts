@@ -1,44 +1,20 @@
-import init, {MyCircuit, initThreadPool} from "shielder-wasm";
+import {Halo2Benchmark} from "shielder-sdk";
 import {expose} from "comlink";
 
-const makeInput = (size: number): Uint8Array => {
-    const arr = new Uint8Array(size);
-    for (let i = 0; i < size; i++) {
-        arr[i] = i % 2;
-    }
-    return arr;
-}
 
-export class Halo2Benchmark {
+// Wrapping the Halo2Benchmark class in a worker to avoid initializing multiple times
+// and to allow adding extra logic to the worker
+export class Halo2BenchmarkWorker {
 
     async init(threads?: number): Promise<void> {
-        console.log("BenchmarkWorker: init()")
-        await init();
-        if (threads) {
-            console.log(`BenchmarkWorker: initThreadPool(${threads})`)
-            await initThreadPool(threads);
-        }
-        console.log("BenchmarkWorker: init() done")
+        await Halo2Benchmark.init(threads);
     }
 
     async runCircuit(size: number): Promise<number> {
-        console.log("BenchmarkWorker: runCircuit()")
-        console.log({size});
-
-        const a = makeInput(size);
-        const b = makeInput(size);
-        const myCircuit = new MyCircuit(size);
-
-        const start = Date.now();
-        myCircuit.prove(a, b);
-        const timeSpent = Date.now() - start;
-
-        console.log(`run() took ${timeSpent}ms`)
-        console.log("BenchmarkWorker: runCircuit() done")
-        return timeSpent;
+        return await Halo2Benchmark.runCircuit(size);
     }
 }
 
-const halo2Benchmark = new Halo2Benchmark();
+const halo2BenchmarkWorker = new Halo2BenchmarkWorker();
 
-expose(halo2Benchmark)
+expose(halo2BenchmarkWorker);
