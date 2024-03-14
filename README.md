@@ -5,11 +5,11 @@ A delicious, crispy waffle.
 Workspace structure:
 
 - `shielder-circuits` - Contains circuits used by the `shielder`.
-- `shielder` - Wallet-facing SDK, implements protocol objects and algorithms.
-- `shielder-wasm` - Code generated from `shielder`, to be used by `shielder-sdk`.
-- `shielder-sdk` - SDK for the `shielder`, doesn't exist yet, to be used by the `shielder-runner-web`.
-- `shielder-runner-web` - Web example of using `shielder-wasm`. Should use `shielder-sdk` in the future.
-- `shielder-extension` - Browser extension using `shielder-wasm`. Should use `shielder-sdk` in the future.
+- `shielder` - Implements protocol objects and algorithms.
+- `shielder-wasm` - Code generated from `shielder` used by `shielder-sdk`.
+- `shielder-sdk` - Wallet-facing SDK, for the `shielder`, wraps `shielder-runner-web`.
+- `shielder-runner-web` - Web example of using `shielder-wasm`.
+- `shielder-extension` - Browser extension using `shielder-wasm`.
 
 # Benchmarks
 
@@ -57,6 +57,3 @@ Run 9: 974ms
 - Consider switching to a different repo structure
     - `shielder-rs` and `shielder-ts` as separate directories in this repo,
     - or as separate repos
-- Create `shielder-sdk` package with `tsup`
-    - https://dev.to/0xkoji/create-a-npm-package-template-with-typescript-and-tsup-328n
-    - https://casperiv.dev/blog/how-to-create-an-npm-package-tsup-esm-cjs-nodejs
