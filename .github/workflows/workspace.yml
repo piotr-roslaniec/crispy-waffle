@@ -85,7 +85,7 @@ jobs:
 #          wasm-pack test --node
 #        working-directory: shielder-wasm
   
-  ts-test:
+  wasm-ts-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -124,13 +124,11 @@ jobs:
       #   with:
       #     cmd: --cwd shielder-wasm/examples/node test
 
-  build-ts-projects:
+  test-ts:
     runs-on: ubuntu-latest
     strategy:
         matrix:
             node-version: [18.x]
-            # TODO: Remove after implementing monorepo
-            project: [shielder-extension, shielder-runner-web]
     steps:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@v1
@@ -162,7 +160,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.pnpm-store
-          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ matrix.project }}
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-
       - uses: pnpm/action-setup@v2.2.4
@@ -174,10 +172,15 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"
-          cache-dependency-path: ${{ matrix.project }}/pnpm-lock.yaml
-      - name: Build the ${{ matrix.project }} project
-        run: pnpm build
-        working-directory: ${{ matrix.project }}
+          cache-dependency-path: shielder-ts/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+        working-directory: shielder-ts
+      - run: pnpm lint
+        working-directory: shielder-ts
+      - run: pnpm build
+        working-directory: shielder-ts
+      - run: pnpm test
+        working-directory: shielder-ts
 
   codecov:
     runs-on: ubuntu-latest
