@@ -42,13 +42,13 @@ jobs:
       - run: cargo clippy --all -- -D warnings
       - run: cargo fmt --all -- --check
       - name: Install cargo-machete
-        uses: baptiste0928/cargo-install@v1
+        uses: baptiste0928/cargo-install@v3
         with:
           crate: cargo-machete
       - run: cargo machete --with-metadata
       # TODO: Fails to install on current nightly, find an older crate version or consider bumping the nightly version
       #      - name: Install cargo-sort
-      #        uses: baptiste0928/cargo-install@v1
+      #        uses: baptiste0928/cargo-install@v3
       #        with:
       #          crate: cargo-sort
       #      - run: cargo sort --check
