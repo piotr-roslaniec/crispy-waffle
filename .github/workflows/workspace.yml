@@ -207,11 +207,14 @@ jobs:
       # bindings are covered by their language's tests.
       - name: Generate code coverage
         run: cargo llvm-cov --workspace --lcov --output-path lcov.info --no-default-features
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+      # TODO: Also upload the coverage of the pnpm workspace after setting up tests with coverage
+      - name: Upload Rust coverage to Codecov
+        uses: codecov/codecov-action@v4
         with:
           files: lcov.info
           fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: piotr-roslaniec/crispy-waffle
 
   # TODO: Just compiling benchmarks for now
   compile-benchmarks:
