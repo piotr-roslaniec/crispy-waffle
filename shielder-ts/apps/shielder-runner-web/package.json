@@ -3,18 +3,18 @@
   "version": "0.1.0",
   "description": "A usage example for shielder-sdk",
   "main": "index.js",
+  "author": "Piotr Rosłaniec <p.roslaniec@gmail.com>",
+  "license": "GPL-3.0-only",
   "scripts": {
     "prebuild": "rm -rf dist",
     "build:tsc": "tsc",
     "build": "pnpm build:tsc && webpack --config webpack.config.js",
     "start": "webpack-dev-server"
   },
-  "author": "Piotr Rosłaniec <p.roslaniec@gmail.com>",
-  "license": "GPL-3.0-only",
   "dependencies": {
     "comlink": "^4.4.1",
-    "shielder-sdk": "file:../shielder-sdk",
-    "shielder-wasm": "file:../shielder-wasm/pkg"
+    "shielder-sdk": "workspace:*",
+    "shielder-wasm": "link:../../../shielder-wasm/pkg"
   },
   "devDependencies": {
     "ansi-html-community": "^0.0.8",
@@ -25,10 +25,12 @@
     "https-browserify": "^1.0.0",
     "stream-http": "^3.2.0",
     "ts-loader": "9.2.5",
-    "typescript": "5.1.6",
     "url": "^0.11.3",
     "webpack": "^5.52.1",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.0.2"
+  },
+  "nx": {
+    "includedScripts": []
   }
 }
