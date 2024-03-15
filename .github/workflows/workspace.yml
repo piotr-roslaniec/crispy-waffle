@@ -25,7 +25,7 @@ jobs:
           toolchain: nightly-2023-08-12
           targets: x86_64-unknown-linux-gnu
           components: clippy, rustfmt
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         continue-on-error: false
         with:
           path: |
@@ -65,7 +65,7 @@ jobs:
 #        with:
 #          toolchain: nightly-2023-08-12
 #          targets: wasm32-unknown-unknown
-#      - uses: actions/cache@v3
+#      - uses: actions/cache@v4
 #        continue-on-error: false
 #        with:
 #          path: |
@@ -93,7 +93,7 @@ jobs:
         with:
           toolchain: nightly-2023-08-12
           targets: wasm32-unknown-unknown
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         continue-on-error: false
         with:
           path: |
@@ -135,7 +135,7 @@ jobs:
         with:
           toolchain: nightly-2023-08-12
           targets: wasm32-unknown-unknown
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         continue-on-error: false
         with:
           path: |
@@ -157,7 +157,7 @@ jobs:
         working-directory: shielder-wasm
       # TODO: Implement pnpm caching in other places too
       - name: Cache pnpm modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.pnpm-store
           key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -191,7 +191,7 @@ jobs:
         with:
           toolchain: "nightly-2023-08-12"
           targets: x86_64-unknown-linux-gnu
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         continue-on-error: false
         with:
           path: |
