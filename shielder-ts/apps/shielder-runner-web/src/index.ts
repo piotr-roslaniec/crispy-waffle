@@ -17,7 +17,7 @@ async function start() {
     // Settings
     const size = 8;
     const numRuns = 10;
-    const threads = 1;
+    const threads = 8;
 
     try {
         await workerAPI.init(threads);

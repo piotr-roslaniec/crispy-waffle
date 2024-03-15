@@ -4,12 +4,13 @@ A delicious, crispy waffle.
 
 Workspace structure:
 
-- `shielder-circuits` - Contains circuits used by the `shielder`.
 - `shielder` - Implements protocol objects and algorithms.
-- `shielder-wasm` - Code generated from `shielder` used by `shielder-sdk`.
-- `shielder-sdk` - Wallet-facing SDK, for the `shielder`, wraps `shielder-runner-web`.
-- `shielder-runner-web` - Web example of using `shielder-wasm`.
-- `shielder-extension` - Browser extension using `shielder-wasm`.
+- `shielder-circuits` - Contains circuits used by the `shielder`.
+- `shielder-wasm` - WASM bindings for `shielder` used by `shielder-sdk`.
+- `shielder-ts` - A `pnpm` workspace containing TypeScript packages.
+    - `apps/shielder-runner-web` - Web example of using `shielder-sdk`.
+    - `apps/shielder-extension` - Browser extension using `shielder-sdk`.
+    - `packages/shielder-sdk` - Wallet-facing SDK, for the `shielder`, wraps `shielder-wasm`.
 
 # Benchmarks
 
@@ -54,6 +55,3 @@ Run 9: 974ms
 - `shielder-runner-web` benchmarks seem way too slow in comparison to the `shielder` benchmarks. Investigate further.
     - Add WASM CPU benchmarks to `shielder-wasm` and compare
     - Use performance tooling in Chrome to debug this further
-- Consider switching to a different repo structure
-    - `shielder-rs` and `shielder-ts` as separate directories in this repo,
-    - or as separate repos
