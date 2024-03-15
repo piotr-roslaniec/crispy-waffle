@@ -19,7 +19,7 @@ jobs:
   rust-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: nightly-2023-08-12
@@ -60,7 +60,7 @@ jobs:
 #  wasm-pack-test:
 #    runs-on: ubuntu-latest
 #    steps:
-#      - uses: actions/checkout@v3
+#      - uses: actions/checkout@v4
 #      - uses: dtolnay/rust-toolchain@v1
 #        with:
 #          toolchain: nightly-2023-08-12
@@ -88,7 +88,7 @@ jobs:
   wasm-ts-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: nightly-2023-08-12
@@ -130,7 +130,7 @@ jobs:
         matrix:
             node-version: [18.x]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: nightly-2023-08-12
@@ -186,7 +186,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ rust-test ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: "nightly-2023-08-12"
@@ -221,7 +221,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ rust-test ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: "nightly-2023-08-12"
