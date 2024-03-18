@@ -7,12 +7,9 @@ Consider limiting the `host_permissions` to selected domains:
 ```json
 {
   "manifest": {
-    "host_permissions": [
-      "https://*/*"
-    ]
+    "host_permissions": ["https://*/*"]
   }
 }
-
 ```
 
 Update content security policy

@@ -22,6 +22,6 @@ Go to [localhost:8080](http://localhost:8080/) in your browser and look in the J
 - `shielder-wasm` must be included in `package.json` as a dependency, but it is not used in the code. This is possibly
   because `webpack` does not support [`import.meta.url`](https://webpack.js.org/api/module-variables/#importmetaurl) in
   WASM files.
-    - IDK if this is an issue for other `shielder-sdk` users yet - Let's see how integration with
-      the `shielder-extension` goes.
-    - Could also be caused by `shielder-sdk` **not** bundling the WASM files correctly - Investigate further
+  - IDK if this is an issue for other `shielder-sdk` users yet - Let's see how integration with
+    the `shielder-extension` goes.
+  - Could also be caused by `shielder-sdk` **not** bundling the WASM files correctly - Investigate further

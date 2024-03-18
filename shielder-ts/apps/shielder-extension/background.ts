@@ -1,14 +1,14 @@
-import {start} from "~prover";
-import {Halo2Benchmark} from "shielder-sdk";
+import { start } from '~prover';
+import { Halo2Benchmark } from 'shielder-sdk';
 
 (async () => {
-    // TODO: Fix multithreading
-    // await Halo2Benchmark.init(12);
-    await Halo2Benchmark.init(null);
+  // TODO: Fix multithreading
+  // await Halo2Benchmark.init(12);
+  await Halo2Benchmark.init(null);
 })();
 
 chrome.action.onClicked.addListener(() => {
-    console.log(`action clicked`)
+  console.log(`action clicked`);
 });
 
 /* Note if you're building for firefox or mv2 in general, chrome.action will be undefined,
@@ -31,10 +31,9 @@ if (chrome.action != undefined) {
 }
 */
 
-
 chrome.commands.onCommand.addListener((command) => {
-    if (command === "test") {
-        console.log(`test command received`);
-        start(8, 10).catch(console.error);
-    }
+  if (command === 'test') {
+    console.log(`test command received`);
+    start(8, 10).catch(console.error);
+  }
 });

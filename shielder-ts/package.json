@@ -6,7 +6,8 @@
   "scripts": {
     "build": "nx run-many --target=build",
     "test": "nx run-many --target=test",
-    "lint": "nx run-many --target=lint"
+    "lint": "nx run-many --target=lint",
+    "prettier": "prettier --write ."
   },
   "keywords": [],
   "author": "Piotr Roslaniec <p.roslaniec@gmail.com>",
