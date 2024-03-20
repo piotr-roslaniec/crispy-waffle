@@ -7,7 +7,7 @@ extern "C" {
     fn log(s: &str);
 }
 
-fn copy_vec_to_u8arr(v: &Vec<u8>) -> Uint8Array {
+fn copy_vec_to_u8arr(v: &[u8]) -> Uint8Array {
     let u8_arr = Uint8Array::new_with_length(v.len() as u32);
     u8_arr.copy_from(v);
     u8_arr

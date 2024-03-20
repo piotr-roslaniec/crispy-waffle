@@ -493,7 +493,7 @@ pub fn generate_proof(
     circuit: HammsterCircuit<Fp>,
     pub_input: &Vec<Fp>,
 ) -> Vec<u8> {
-    println!("Generating proof...");
+    dbg!("Generating proof...");
     let mut transcript: Blake2bWrite<_, _, _> =
         Blake2bWrite::<_, _, Challenge255<_>>::init(vec![]);
     create_proof::<

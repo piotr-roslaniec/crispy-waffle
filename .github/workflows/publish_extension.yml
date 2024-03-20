@@ -5,7 +5,6 @@ on:
 jobs:
   publish_extension:
     runs-on: ubuntu-latest
-    working-directory: ./shielder-extension
     steps:
       - uses: actions/checkout@v4
       - name: Cache pnpm modules
@@ -26,10 +25,13 @@ jobs:
           cache: "pnpm"
       - name: Build the extension
         run: pnpm build
+        working-directory: shielder-ts/shielder-extension
       - name: Package the extension into a zip artifact
         run: pnpm package
+        working-directory: shielder-ts/shielder-extension
       - name: Browser Platform Publish
         uses: PlasmoHQ/bpp@v3
         with:
           keys: ${{ secrets.SUBMIT_KEYS }}
-          artifact: build/chrome-mv3-prod.zip
+          artifact: shielder-ts/shielder-extension/build/chrome-mv3-prod.zip
+
