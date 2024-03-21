@@ -14,7 +14,7 @@ publish = false
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-shielder = { workspace = true, features = ["wasm", "multithreading"] }
+shielder = { workspace = true, features = ["wasm"] }
 wasm-bindgen = { workspace = true }
 rayon = { workspace = true, optional = true }
 wasm-bindgen-rayon = { workspace = true, optional = true }
@@ -24,7 +24,7 @@ wasm-bindgen-test = { workspace = true }
 
 [features]
 default = []
-multithreading = ["rayon", "wasm-bindgen-rayon"]
+multithreading = ["rayon", "wasm-bindgen-rayon", "shielder/multithreading"]
 
 [package.metadata.cargo-machete]
 ignored = ["rayon", "wasm-bindgen"]

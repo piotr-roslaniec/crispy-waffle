@@ -24,7 +24,7 @@ wasm-bindgen-rayon = { workspace = true, optional = true }
 [features]
 default = []
 wasm = ["getrandom/js", "wasm-bindgen", "js-sys"]
-multithreading = ["rayon", "wasm-bindgen-rayon"]
+multithreading = ["rayon", "halo2_proofs/multicore", "halo2_poseidon/multicore"]
 
 [package.metadata.cargo-machete]
 ignored = ["getrandom", "rayon", "wasm_bindgen_rayon"]

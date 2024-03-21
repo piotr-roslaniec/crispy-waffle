@@ -17,16 +17,16 @@ async function start() {
   // Settings
   const size = 13;
   const numRuns = 10;
-  const threads = 16;
+  const threads = 8;
 
   try {
     await workerAPI.init(threads);
 
     const results = [];
     for (let i = 0; i < numRuns; i++) {
-      console.log(`Size ${i}`);
+      console.log(`Iteration: ${i}`);
       const result = await workerAPI.runCircuit(size);
-      console.log(`Result ${i} = ${result}ms`);
+      console.log(`Result: ${i} = ${result}ms`);
       results.push(result);
     }
     const average = results.reduce((a, b) => a + b, 0) / results.length;
