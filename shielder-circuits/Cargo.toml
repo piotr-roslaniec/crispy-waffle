@@ -16,6 +16,7 @@ getrandom = { workspace = true, optional = true }
 wasm-bindgen = { workspace = true, optional = true }
 js-sys = { workspace = true, optional = true }
 rayon = { workspace = true, optional = true }
+halo2_poseidon = { git = "https://github.com/Cardinal-Cryptography/poseidon-gadget", branch = "aleph", default-features = false }
 
 [target.'cfg(target_family = "wasm")'.dependencies]
 wasm-bindgen-rayon = { workspace = true, optional = true }

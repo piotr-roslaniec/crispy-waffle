@@ -1,16 +1,20 @@
 pub mod hammster;
+pub mod merkle;
 
 #[cfg(feature = "wasm")]
 pub mod wasm;
 
 use std::io::BufReader;
 
-use halo2_proofs::poly::commitment::Params;
-use halo2curves::pasta::EqAffine;
+use halo2_proofs::{
+    halo2curves::bn256::{Bn256, Fr},
+    poly::{commitment::Params, kzg::commitment::ParamsKZG},
+};
+use halo2curves::ff::{Field, PrimeField};
 
-use crate::hammster::{
-    calculate_hamming_distance, create_circuit, empty_circuit, generate_keys,
-    generate_proof, generate_setup_params,
+use crate::merkle::{
+    create_circuit, empty_circuit, generate_keys, generate_proof,
+    generate_setup_params,
 };
 
 pub fn setup_params(k: u32) -> Vec<u8> {
@@ -22,21 +26,22 @@ pub fn setup_params(k: u32) -> Vec<u8> {
 }
 
 pub fn proof_generate(a: &[u8], b: &[u8], params_bytes: &[u8]) -> Vec<u8> {
-    let params = Params::<EqAffine>::read(&mut BufReader::new(params_bytes))
+    let params = ParamsKZG::<Bn256>::read(&mut BufReader::new(params_bytes))
         .expect("params should not fail to read");
 
-    // Turn slices into vectors and calculate hamming distance
-    let a_vec: Vec<u64> = a.to_vec().iter().map(|x| *x as u64).collect();
-    let b_vec: Vec<u64> = b.to_vec().iter().map(|x| *x as u64).collect();
-    let hamming_dist = calculate_hamming_distance(a_vec.clone(), b_vec.clone());
+    let (pk, _vk) = generate_keys(&params, &empty_circuit());
 
-    // Generate proving key
-    let empty_circuit = empty_circuit();
-    let (pk, _vk) = generate_keys(&params, &empty_circuit);
+    let root = Fr::from_str_vartime(
+                "21070819810761031412485887399825884674609810661645526274842754985158693294840",
+            )
+            .unwrap();
+    let leaf = Fr::ONE;
+    let path = [Fr::ONE; 20];
+    let path_shape = [Fr::ONE; 20];
 
     // Generate proof
-    let hammster_circuit = create_circuit(a_vec, b_vec);
-    generate_proof(&params, &pk, hammster_circuit, &hamming_dist)
+    let test_circuit = create_circuit(root, leaf, path, path_shape);
+    generate_proof(&params, &pk, test_circuit, &vec![])
 }
 
 // TODO: Consider rewriting:
