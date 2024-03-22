@@ -8,7 +8,7 @@ pub fn bench_my_circuit(c: &mut Criterion) {
 
     // Input values to generate a proof with
     // TODO: Just one size for now, must match size used in `shield-runner-web`
-    for size in [8].iter() {
+    for size in [13].iter() {
         // Fill a and b with ones and zeros
         let mut rng = rand::thread_rng();
         let a: Vec<u8> = (0..*size).map(|_| rng.gen_range(0..2)).collect();

@@ -14,7 +14,7 @@ exclude = [
 console_error_panic_hook = "0.1.7"
 criterion = "0.4.0"
 getrandom = "0.2"
-halo2_proofs = { git = "https://github.com/Cardinal-Cryptography/pse-halo2", branch = "halo2-cc" }
+halo2_proofs = { git = "https://github.com/Cardinal-Cryptography/pse-halo2", branch = "aleph" }
 halo2curves = { version = "0.6.0", default-features = false }
 js-sys = "0.3.61"
 rand = "0.8.5"

@@ -6,6 +6,7 @@ use halo2_proofs::{
         AssignedCell, Chip, Layouter, Region, SimpleFloorPlanner, Value,
     },
     dev::MockProver,
+    halo2curves::bn256::{Bn256, Fr, G1Affine},
     plonk::{
         create_proof, keygen_pk, keygen_vk, Advice, Circuit, Column,
         ConstraintSystem, Error, Expression, Instance, ProvingKey, Selector,
@@ -13,15 +14,14 @@ use halo2_proofs::{
     },
     poly::{
         commitment::ParamsProver,
-        ipa::{
-            commitment::{IPACommitmentScheme, ParamsIPA},
-            multiopen::ProverIPA,
+        kzg::{
+            commitment::{KZGCommitmentScheme, ParamsKZG},
+            multiopen::ProverSHPLONK,
         },
         Rotation,
     },
     transcript::{Blake2bWrite, Challenge255, TranscriptWriterBuffer},
 };
-use halo2curves::pasta::{EqAffine, Fp};
 use rand_core::OsRng;
 
 // The length of our binary inputs
@@ -412,7 +412,7 @@ impl<F: Field> Circuit<F> for HammsterCircuit<F> {
 }
 
 // Generates an empty circuit. Useful for generating the proving/verifying keys.
-pub fn empty_circuit() -> HammsterCircuit<Fp> {
+pub fn empty_circuit() -> HammsterCircuit<Fr> {
     HammsterCircuit {
         a: [Value::unknown(); BINARY_LENGTH],
         b: [Value::unknown(); BINARY_LENGTH],
@@ -420,21 +420,21 @@ pub fn empty_circuit() -> HammsterCircuit<Fp> {
 }
 
 // Creates a circuit from two vector inputs
-pub fn create_circuit(a: Vec<u64>, b: Vec<u64>) -> HammsterCircuit<Fp> {
+pub fn create_circuit(a: Vec<u64>, b: Vec<u64>) -> HammsterCircuit<Fr> {
     // Put inputs into circuit-friendly form
-    let a_vec: [Value<Fp>; BINARY_LENGTH] = a
+    let a_vec: [Value<Fr>; BINARY_LENGTH] = a
         .clone()
         .iter()
-        .map(|f| Value::known(Fp::from(*f)))
-        .collect::<Vec<Value<Fp>>>()
+        .map(|f| Value::known(Fr::from(*f)))
+        .collect::<Vec<Value<Fr>>>()
         .try_into()
         .unwrap();
 
-    let b_vec: [Value<Fp>; BINARY_LENGTH] = b
+    let b_vec: [Value<Fr>; BINARY_LENGTH] = b
         .clone()
         .iter()
-        .map(|f| Value::known(Fp::from(*f)))
-        .collect::<Vec<Value<Fp>>>()
+        .map(|f| Value::known(Fr::from(*f)))
+        .collect::<Vec<Value<Fr>>>()
         .try_into()
         .unwrap();
 
@@ -444,15 +444,15 @@ pub fn create_circuit(a: Vec<u64>, b: Vec<u64>) -> HammsterCircuit<Fp> {
 
 // Generates setup parameters using k, which is the number of rows of the circuit
 // can fit in and must be a power of two
-pub fn generate_setup_params(k: u32) -> ParamsIPA<EqAffine> {
-    ParamsIPA::<EqAffine>::new(k)
+pub fn generate_setup_params(k: u32) -> ParamsKZG<Bn256> {
+    ParamsKZG::<Bn256>::new(k)
 }
 
 // Generates the verifying and proving keys. We can pass in an empty circuit to generate these
 pub fn generate_keys(
-    params: &ParamsIPA<EqAffine>,
-    circuit: &HammsterCircuit<Fp>,
-) -> (ProvingKey<EqAffine>, VerifyingKey<EqAffine>) {
+    params: &ParamsKZG<Bn256>,
+    circuit: &HammsterCircuit<Fr>,
+) -> (ProvingKey<G1Affine>, VerifyingKey<G1Affine>) {
     // just to emphasize that for vk, pk we don't need to know the value of `x`
     let vk = keygen_vk(params, circuit).expect("vk should not fail");
     let pk =
@@ -461,21 +461,21 @@ pub fn generate_keys(
 }
 
 // Calculates the hamming distance between two vectors
-pub fn calculate_hamming_distance(a: Vec<u64>, b: Vec<u64>) -> Vec<Fp> {
+pub fn calculate_hamming_distance(a: Vec<u64>, b: Vec<u64>) -> Vec<Fr> {
     let hamming_dist = a
         .clone()
         .iter()
         .enumerate()
         .map(|(i, x)| (x + b[i]) % 2)
         .sum::<u64>();
-    vec![Fp::from(hamming_dist)]
+    vec![Fr::from(hamming_dist)]
 }
 
 // Runs the mock prover and prints any errors
 pub fn run_mock_prover(
     k: u32,
-    circuit: &HammsterCircuit<Fp>,
-    pub_input: &[Fp],
+    circuit: &HammsterCircuit<Fr>,
+    pub_input: &[Fr],
 ) {
     let prover = MockProver::run(k, circuit, vec![pub_input.to_vec()])
         .expect("Mock prover should run");
@@ -488,17 +488,17 @@ pub fn run_mock_prover(
 
 // Generates a proof
 pub fn generate_proof(
-    params: &ParamsIPA<EqAffine>,
-    pk: &ProvingKey<EqAffine>,
-    circuit: HammsterCircuit<Fp>,
-    pub_input: &Vec<Fp>,
+    params: &ParamsKZG<Bn256>,
+    pk: &ProvingKey<G1Affine>,
+    circuit: HammsterCircuit<Fr>,
+    pub_input: &Vec<Fr>,
 ) -> Vec<u8> {
     dbg!("Generating proof...");
     let mut transcript: Blake2bWrite<_, _, _> =
         Blake2bWrite::<_, _, Challenge255<_>>::init(vec![]);
     create_proof::<
-        IPACommitmentScheme<EqAffine>,
-        ProverIPA<EqAffine>,
+        KZGCommitmentScheme<Bn256>,
+        ProverSHPLONK<Bn256>,
         _,
         _,
         _,
