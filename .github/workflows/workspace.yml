@@ -13,7 +13,7 @@ on:
       - v*
 
 env:
-  RUSTFLAGS: "-Dwarnings"
+  RUSTFLAGS: "-D warnings"
 
 jobs:
   rust-test:
@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@v1
         with:
-          toolchain: nightly-2023-08-12
+          toolchain: nightly-2024-02-06
           targets: x86_64-unknown-linux-gnu
           components: clippy, rustfmt
       - uses: actions/cache@v4
@@ -36,34 +36,40 @@ jobs:
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-x86_64-unknown-linux-gnu
           restore-keys: ${{ runner.os }}-cargo-
-      #      TODO: Fix compilation failing due to a misconfigured compilation targets:
-      #      Did you forget to enable `atomics` and `bulk-memory` features as outlined in wasm-bindgen-rayon README?
-      #      - run: cargo clippy --all --all-features -- -D warnings
-      - run: cargo clippy --all -- -D warnings
+      - name: Add Rust source component (`rust-src`)
+        run: rustup component add rust-src
+# TODO: Fix error `error: Did you forget to enable `atomics` and `bulk-memory` features as outlined in wasm-bindgen-rayon README?`
+#      - run: cargo clippy --all --all-features -- -D warnings
       - run: cargo fmt --all -- --check
       - name: Install cargo-machete
         uses: baptiste0928/cargo-install@v3
         with:
           crate: cargo-machete
-      - run: cargo machete --with-metadata
-      # TODO: Fails to install on current nightly, find an older crate version or consider bumping the nightly version
-      #      - name: Install cargo-sort
-      #        uses: baptiste0928/cargo-install@v3
-      #        with:
-      #          crate: cargo-sort
-      #      - run: cargo sort --check
+      - run: cargo machete
+      - name: Install cargo-sort
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: cargo-sort
+      - run: cargo sort --check
       - run: cargo test --release
 
-# TODO: Failing due to WASM test compilation issues:
-# | error[E0658]: use of unstable library feature 'stdsimd'
-# |   --> /root/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wasm-bindgen-futures-0.4.42/src/task/multithread.rs:38:13
+# TODO: Enable this test after fixing `wasm-pack test` running on GitHub Actions
 #  wasm-pack-test:
 #    runs-on: ubuntu-latest
 #    steps:
-#      - uses: actions/checkout@v4
+#      - uses: actions/checkout@
+#      # TODO: Cache apt packages. Currently fails to install because it needs apt update first
+#      #      - uses: awalsh128/cache-apt-pkgs-action@v1
+#      #        with:
+#      #          packages: libnss3-tools
+#      #          version: 1.0
+#      #      - uses: ConorMacBride/install-package@v1
+#      #        with:
+#      #          apt: libnss3-tools
+#      - run: sudo apt update -y && sudo apt install -y libnss3
 #      - uses: dtolnay/rust-toolchain@v1
 #        with:
-#          toolchain: nightly-2023-08-12
+#          toolchain: nightly-2024-02-06
 #          targets: wasm32-unknown-unknown
 #      - uses: actions/cache@v4
 #        continue-on-error: false
@@ -79,10 +85,8 @@ jobs:
 #      - name: Add Rust source component (`rust-src`)
 #        run: rustup component add rust-src
 #      - run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
-#      - run: |
-#          export RUSTFLAGS="-C target-feature=+atomics,+bulk-memory,+mutable-globals -C link-arg=--max-memory=4294967296"
-#          export CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_RUSTFLAGS=$RUSTFLAGS
-#          wasm-pack test --node
+# # TODO: Currently fails because of misconfigured browser drivers
+#      - run: bash ./scripts/test_ci.bash
 #        working-directory: shielder-wasm
   
   wasm-ts-test:
@@ -91,7 +95,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@v1
         with:
-          toolchain: nightly-2023-08-12
+          toolchain: nightly-2024-02-06
           targets: wasm32-unknown-unknown
       - uses: actions/cache@v4
         continue-on-error: false
@@ -104,9 +108,9 @@ jobs:
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-wasm32-unknown-unknown
           restore-keys: ${{ runner.os }}-cargo-
-        # TODO: Always install a pinned wasm-pack version, everywhere
       - name: Add Rust source component (`rust-src`)
         run: rustup component add rust-src
+        # TODO: Always install a pinned wasm-pack version, everywhere
       - run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
       - run: |
           export RUSTFLAGS="-C target-feature=+atomics,+bulk-memory,+mutable-globals -C link-arg=--max-memory=4294967296"
@@ -127,13 +131,13 @@ jobs:
   test-ts:
     runs-on: ubuntu-latest
     strategy:
-        matrix:
-            node-version: [18.x]
+      matrix:
+        node-version: [ 18.x ]
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@v1
         with:
-          toolchain: nightly-2023-08-12
+          toolchain: nightly-2024-02-06
           targets: wasm32-unknown-unknown
       - uses: actions/cache@v4
         continue-on-error: false
@@ -189,7 +193,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@v1
         with:
-          toolchain: "nightly-2023-08-12"
+          toolchain: "nightly-2024-02-06"
           targets: x86_64-unknown-linux-gnu
       - uses: actions/cache@v4
         continue-on-error: false
@@ -224,7 +228,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@v1
         with:
-          toolchain: "nightly-2023-08-12"
+          toolchain: "nightly-2024-02-06"
           targets: x86_64-unknown-linux-gnu
       - name: Compile benchmarks
         run: cargo bench --no-run --no-default-features

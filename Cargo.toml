@@ -7,8 +7,25 @@ members = [
 ]
 exclude = [
     # Fixes cargo-machete false-positives in node_modules
-    "shielder-extension/node_modules"
+    "shielder-ts/node_modules",
 ]
+
+[workspace.dependencies]
+console_error_panic_hook = "0.1.7"
+criterion = "0.4.0"
+getrandom = "0.2"
+halo2_proofs = { git = "https://github.com/Cardinal-Cryptography/pse-halo2", branch = "halo2-cc" }
+halo2curves = { version = "0.6.0", default-features = false }
+js-sys = "0.3.61"
+rand = "0.8.5"
+rand_core = "0.6.4"
+rayon = "1.8"
+shielder = { path = "shielder" }
+shielder-circuits = { path = "shielder-circuits" }
+wasm-bindgen = "=0.2.91"
+#wasm-bindgen-rayon = { path = "/home/piotr/Documents/projects/wasm-bindgen-rayon" }
+wasm-bindgen-rayon = "=1.1.3"
+wasm-bindgen-test = "=0.3.41"
 
 [profile.dev]
 opt-level = 3

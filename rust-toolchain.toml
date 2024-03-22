@@ -2,6 +2,6 @@
 # TODO: Poseidon doesn't support the `stable` channel yet
 #profile = "default"
 #channel = "1.73.0" # TODO: Put a proper MSRV here
-channel = "nightly-2023-08-12"
+channel = "nightly-2024-02-06"
 components = ["rustfmt", "clippy"]
 targets = ["x86_64-unknown-linux-gnu", "wasm32-unknown-unknown"]

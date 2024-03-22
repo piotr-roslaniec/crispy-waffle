@@ -14,17 +14,15 @@ authors = ["Piotr Roslaniec <p.roslaniec@gmail.com>"]
 bench = false
 
 [dependencies]
-shielder-circuits = { path = "../shielder-circuits" }
-rand = "0.8.5"
-# WASM bindings:
-getrandom = { version = "0.2", features = ["js"], optional = true }
-wasm-bindgen = { version = "0.2.86", optional = true }
-console_error_panic_hook = "0.1.7"
+shielder-circuits = { workspace = true }
+rand = { workspace = true }
+getrandom = { workspace = true, features = ["js"], optional = true }
+wasm-bindgen = { workspace = true, optional = true }
+console_error_panic_hook = { workspace = true }
 
 [dev-dependencies]
-criterion = "0.4.0"
-# WASM bindings:
-wasm-bindgen = { version = "0.2.86", features = ["serde-serialize"] }
+criterion = { workspace = true }
+wasm-bindgen = { workspace = true, features = ["serde-serialize"] }
 
 [features]
 default = []
