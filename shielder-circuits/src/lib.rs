@@ -25,7 +25,7 @@ pub fn setup_params(k: u32) -> Vec<u8> {
     buf
 }
 
-pub fn proof_generate(a: &[u8], b: &[u8], params_bytes: &[u8]) -> Vec<u8> {
+pub fn proof_generate(_a: &[u8], _b: &[u8], params_bytes: &[u8]) -> Vec<u8> {
     let params = ParamsKZG::<Bn256>::read(&mut BufReader::new(params_bytes))
         .expect("params should not fail to read");
 
@@ -41,7 +41,7 @@ pub fn proof_generate(a: &[u8], b: &[u8], params_bytes: &[u8]) -> Vec<u8> {
 
     // Generate proof
     let test_circuit = create_circuit(root, leaf, path, path_shape);
-    generate_proof(&params, &pk, test_circuit, &vec![])
+    generate_proof(&params, &pk, test_circuit, &[])
 }
 
 // TODO: Consider rewriting:

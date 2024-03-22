@@ -6,14 +6,12 @@ use halo2_poseidon::poseidon::{
 };
 use halo2_proofs::{
     arithmetic::Field,
-    circuit::{
-        AssignedCell, Chip, Layouter, Region, SimpleFloorPlanner, Value,
-    },
+    circuit::{AssignedCell, Chip, Layouter, Region, Value},
     dev::MockProver,
     halo2curves::bn256::{Bn256, Fr, G1Affine},
     plonk::{
         create_proof, keygen_pk, keygen_vk, Advice, Circuit, Column,
-        ConstraintSystem, Error, Expression, Instance, ProvingKey, Selector,
+        ConstraintSystem, Error, Expression, ProvingKey, Selector,
         VerifyingKey,
     },
     poly::{
@@ -428,13 +426,13 @@ pub fn create_circuit(
 
     let path = path
         .into_iter()
-        .map(|v| Value::known(v))
+        .map(Value::known)
         .collect::<Vec<_>>()
         .try_into()
         .unwrap();
     let path_shape = path_shape
         .into_iter()
-        .map(|v| Value::known(v))
+        .map(Value::known)
         .collect::<Vec<_>>()
         .try_into()
         .unwrap();
@@ -467,7 +465,7 @@ pub fn generate_keys(
 }
 
 // Runs the mock prover and prints any errors
-pub fn run_mock_prover(k: u32, circuit: &TestCircuit, pub_input: &[Fr]) {
+pub fn run_mock_prover(k: u32, circuit: &TestCircuit, _pub_input: &[Fr]) {
     let prover =
         MockProver::run(k, circuit, vec![]).expect("Mock prover should run");
     let res = prover.verify();
@@ -482,7 +480,7 @@ pub fn generate_proof(
     params: &ParamsKZG<Bn256>,
     pk: &ProvingKey<G1Affine>,
     circuit: TestCircuit,
-    pub_input: &Vec<Fr>,
+    _pub_input: &[Fr],
 ) -> Vec<u8> {
     println!("Generating proof...");
     let mut transcript: Blake2bWrite<_, _, _> =

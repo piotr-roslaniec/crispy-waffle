@@ -1,14 +1,9 @@
 use halo2_proofs::{
-    halo2curves::bn256::{Bn256, Fr, G1Affine},
+    halo2curves::bn256::{Bn256, Fr},
     plonk::verify_proof,
-    poly::{
-        commitment::Verifier,
-        kzg::{
-            commitment::KZGCommitmentScheme,
-            multiopen::{ProverGWC, ProverSHPLONK, VerifierSHPLONK},
-            strategy::SingleStrategy,
-        },
-        VerificationStrategy,
+    poly::kzg::{
+        commitment::KZGCommitmentScheme, multiopen::VerifierSHPLONK,
+        strategy::SingleStrategy,
     },
     transcript::{Blake2bRead, Challenge255, TranscriptReadBuffer},
 };
@@ -33,7 +28,7 @@ fn main() {
     let test_circuit = create_circuit(root, leaf, path, path_shape);
 
     // Items that are useful for debugging issues
-    run_mock_prover(k, &test_circuit, &vec![]);
+    run_mock_prover(k, &test_circuit, &[]);
 
     // Generate setup params
     let params = generate_setup_params(k);
@@ -43,7 +38,7 @@ fn main() {
     let (pk, vk) = generate_keys(&params, &empty_circuit);
 
     // Generate proof
-    let proof = generate_proof(&params, &pk, test_circuit, &vec![]);
+    let proof = generate_proof(&params, &pk, test_circuit, &[]);
     let strategy = SingleStrategy::new(&params);
     let mut transcript = Blake2bRead::<_, _, Challenge255<_>>::init(&proof[..]);
     println!(
