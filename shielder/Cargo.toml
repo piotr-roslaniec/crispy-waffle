@@ -2,42 +2,37 @@
 name = "shielder"
 version = "0.1.0"
 edition = "2021"
-license = "GPL-3.0"
-repository = "https://github.com/piotr-roslaniec/crispy-waffle"
-readme = "README.md"
-description = ""
-keywords = []
-categories = []
-authors = ["Piotr Roslaniec <p.roslaniec@gmail.com>"]
 
 [lib]
-bench = false
+name = "shielder"
+path = "src/lib.rs"
+crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-shielder-circuits = { workspace = true }
+halo2curves = { workspace = true }
+halo2_proofs = { workspace = true }
 rand = { workspace = true }
-getrandom = { workspace = true, features = ["js"], optional = true }
+rand_core = { workspace = true }
+getrandom = { workspace = true, optional = true }
 wasm-bindgen = { workspace = true, optional = true }
+js-sys = { workspace = true, optional = true }
+rayon = { workspace = true, optional = true }
+halo2_poseidon = { git = "https://github.com/Cardinal-Cryptography/poseidon-gadget", branch = "aleph", default-features = false }
+criterion = { workspace = true }
 console_error_panic_hook = { workspace = true }
 
-[dev-dependencies]
-criterion = { workspace = true }
-wasm-bindgen = { workspace = true, features = ["serde-serialize"] }
+[target.'cfg(target_family = "wasm")'.dependencies]
+wasm-bindgen-rayon = { workspace = true, optional = true }
 
 [features]
 default = []
-wasm = [
-    "getrandom",
-    "wasm-bindgen",
-    "shielder-circuits/wasm",
-]
-multithreading = ["shielder-circuits/multithreading"]
+wasm = ["getrandom/js", "wasm-bindgen", "js-sys"]
+multithreading = ["rayon", "halo2_proofs/multicore", "halo2_poseidon/multicore"]
+
+[package.metadata.cargo-machete]
+ignored = ["getrandom", "rayon", "wasm_bindgen_rayon"]
 
 [[bench]]
 name = "benchmarks"
-path = "benches/bench_main.rs"
+path = "benches/bench.rs"
 harness = false
-
-[package.metadata.cargo-machete]
-ignored = ["getrandom"]
-
