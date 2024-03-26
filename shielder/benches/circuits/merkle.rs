@@ -34,4 +34,4 @@ pub fn bench_my_circuit(c: &mut Criterion) {
     }
 }
 
-criterion_group!(my_circuit, bench_my_circuit);
+criterion_group!(merkle, bench_my_circuit);

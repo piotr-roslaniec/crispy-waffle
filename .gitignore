@@ -44,3 +44,6 @@ dist/
 
 # typescript
 .tsbuildinfo
+
+#rust targets
+/shielder/target
