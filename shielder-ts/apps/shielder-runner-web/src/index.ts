@@ -1,6 +1,11 @@
 import { wrap } from 'comlink';
 import type { Halo2BenchmarkWorker } from './worker';
 
+// Note: this will be overridden by the Playwright test runner.
+// The default implementation is provided only for manual testing.
+// @ts-ignore
+globalThis.onDone ??= () => console.log('OK');
+
 const root = document.createElement('div');
 document.body.appendChild(root);
 root.innerHTML = 'Initializing';
@@ -11,13 +16,16 @@ const worker: Worker = new Worker(new URL('./worker.ts', import.meta.url), {
 
 const workerAPI = wrap<Halo2BenchmarkWorker>(worker);
 
-async function start() {
-  root.innerHTML = 'Running...';
+type Config = {
+  size: number;
+  numRuns: number;
+  threads?: number;
+};
+async function start(config: Config) {
+  const { size, numRuns, threads } = config;
+  console.log(`Starting benchmark with config: ${JSON.stringify(config)}`);
 
-  // Settings
-  const size = 13;
-  const numRuns = 10;
-  const threads = 8;
+  root.innerHTML = 'Running...';
 
   try {
     await workerAPI.init(threads);
@@ -27,6 +35,7 @@ async function start() {
       console.log(`Iteration: ${i}`);
       const result = await workerAPI.runCircuit(size);
       console.log(`Result: ${i} = ${result}ms`);
+      console.log(`csv:${i},${result}`);
       results.push(result);
     }
     const average = results.reduce((a, b) => a + b, 0) / results.length;
@@ -41,10 +50,24 @@ async function start() {
     }
     const averageHtml = `<div>Average: ${average}ms</div>`;
     root.innerHTML = settingsHtml + averageHtml + resultsHtml;
+    console.log('Done');
   } catch (e) {
     console.error(e);
     root.innerHTML = 'Error: ' + e;
   }
 }
 
-start();
+// Expose the start function to the window for Playwright to call
+// @ts-ignore
+window.start = start;
+
+// Click this button to start the benchmark
+const startButton = document.createElement('button');
+startButton.textContent = 'Start';
+startButton.onclick = () => {
+  start({
+    size: 13,
+    numRuns: 1,
+    threads: navigator.hardwareConcurrency,
+  });
+};
