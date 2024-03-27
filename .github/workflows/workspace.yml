@@ -191,8 +191,71 @@ jobs:
         working-directory: shielder-ts
       - run: pnpm e2e
         env:
-          # TODO: Create a separate job for benchmarks
           TEST_OR_BENCHMARK: test
+        working-directory: shielder-ts
+      # TODO: Temporary, until we have a better way to access test outputs
+      - run: cat apps/shielder-runner-web/test-outputs/*.csv
+        working-directory: shielder-ts
+      - run: cat apps/shielder-runner-web/test-outputs/*.log
+        working-directory: shielder-ts
+
+  wasm-benchmarks-ts:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 18.x ]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: ${{ env.RUST_TOOLCHAIN }}
+          targets: wasm32-unknown-unknown
+          components: rust-src
+      - uses: actions/cache@v4
+        continue-on-error: false
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-wasm32-unknown-unknown
+      # Need to build WASM first, then the extension
+      # TODO: Always install a pinned wasm-pack version, everywhere
+      - run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+      - run: ./scripts/build.bash web
+        env:
+          # Putting WASM-related config into env vars here because for some reason we don't pick up
+          # shielder-wasm/.cargo/config.toml on CI
+          # TODO: Investigate this behavior & maybe fix it
+          RUSTFLAGS: "-D warnings -C target-feature=+atomics,+bulk-memory,+mutable-globals -C link-arg=--max-memory=4294967296"
+        working-directory: shielder-wasm
+      # TODO: Implement pnpm caching in other places too
+      - name: Cache pnpm modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+      - uses: pnpm/action-setup@v3.0.0
+        with:
+          version: latest
+          run_install: true
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
+          cache-dependency-path: shielder-ts/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+        working-directory: shielder-ts
+      - run: pnpm build
+        working-directory: shielder-ts
+      - run: pnpm e2e
+        env:
+          TEST_OR_BENCHMARK: benchmark
         working-directory: shielder-ts
       # TODO: Temporary, until we have a better way to access test outputs
       - run: cat apps/shielder-runner-web/test-outputs/*.csv
