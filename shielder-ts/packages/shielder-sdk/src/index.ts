@@ -10,29 +10,24 @@ const makeInput = (size: number): Uint8Array => {
 
 export class Halo2Benchmark {
   static async init(threads?: number): Promise<void> {
-    console.log('BenchmarkWorker: init()');
+    console.log(`BenchmarkWorker: init(threads=${threads})`);
     await init();
     if (threads) {
       console.log(`BenchmarkWorker: initThreadPool(${threads})`);
       await initThreadPool(threads);
     }
-    console.log('BenchmarkWorker: init() done');
+      console.log(`BenchmarkWorker: init(threads=${threads}) done`);
   }
-
-  static async runCircuit(size: number): Promise<number> {
-    console.log('BenchmarkWorker: runCircuit()');
-    console.log({ size });
-
+  static async runCircuit(size:number): Promise<number> {
+    console.log(`BenchmarkWorker: runCircuit(size=${size})`);
     const a = makeInput(size);
     const b = makeInput(size);
     const myCircuit = new MyCircuit(size);
-
     const start = Date.now();
     myCircuit.prove(a, b);
     const timeSpent = Date.now() - start;
-
-    console.log(`run() took ${timeSpent}ms`);
-    console.log('BenchmarkWorker: runCircuit() done');
+    console.log(`runCircuit() took ${timeSpent}ms`);
+    console.log(`BenchmarkWorker: runCircuit(size=${size}) done`);
     return timeSpent;
   }
 }
