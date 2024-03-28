@@ -3,7 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 const url = `http://127.0.0.1:3000/`;
 
 export default defineConfig({
-  timeout: 3000 * 1000, // TODO: Goood for tests, adjust for benchmarks
+  timeout: 4 * 60 * 60 * 1000, // 4 hours
   fullyParallel: false, // Run tests sequentially
   forbidOnly: !!process.env.CI,
   reporter: process.env.CI ? 'github' : 'list', // TODO: Make sure it works on CI
